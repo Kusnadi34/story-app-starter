@@ -1,5 +1,6 @@
 import '../sass/main.scss';
 import 'bootstrap';
+window.bootstrap = bootstrap; // Ekspos bootstrap ke global
 import { configureLocalization } from '@lit/localize';
 import api from './services/api.js';
 
