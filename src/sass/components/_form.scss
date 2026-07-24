@@ -1,0 +1,21 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.custom-form {
+  .form-control, .form-select {
+    border-radius: 30px;
+    padding: 12px 20px;
+    &:focus {
+      border-color: $secondary-color;
+      box-shadow: 0 0 0 0.25rem rgba($secondary-color, 0.25);
+    }
+  }
+  .btn-submit {
+    @include btn-custom($secondary-color, white);
+    width: 100%;
+    font-weight: 600;
+  }
+  .form-label {
+    font-weight: 500;
+  }
+}

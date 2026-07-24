@@ -1,0 +1,54 @@
+@use '../abstracts/variables' as *;
+
+.card {
+  border: none;
+  border-radius: $border-radius-lg;
+  background: $glass-bg;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid $glass-border;
+  box-shadow: $glass-shadow;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border-left: 8px solid $secondary;
+  height: 100%;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: $box-shadow;
+  }
+
+  .card-img-top {
+    border-top-left-radius: $border-radius-lg;
+    border-top-right-radius: $border-radius-lg;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .card-body {
+    padding: 20px;
+  }
+
+  .card-title {
+    font-family: $headings-font-family;
+    font-weight: 700;
+    color: $primary;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+  }
+
+  .card-text {
+    color: $body-color;
+    opacity: 0.85;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .card-footer {
+    background: transparent;
+    border-top: 1px solid rgba(69, 26, 3, 0.06);
+    color: #78716c;
+    font-size: 0.85rem;
+    padding: 12px 20px;
+  }
+}
