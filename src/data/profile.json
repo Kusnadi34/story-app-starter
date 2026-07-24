@@ -1,0 +1,8 @@
+{
+  "name": "Nana Kusnadi",
+  "title": "Frontend Engineering",
+  "bio": "Saya adalah pengembang web yang antusias dalam membangun aplikasi interaktif.",
+  "photoUrl": "images/IMG_20260720_190745.jpg", 
+  "email": "nanakusnadi035@gmail.com",
+  "skills": ["JavaScript", "Webpack", "Lit", "Bootstrap", "Sass"]
+}
