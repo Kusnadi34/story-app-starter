@@ -11,7 +11,6 @@ class AppHeader extends LitElement {
     updateWhenLocaleChanges(this);
     this.isAuth = false;
     
-    
     this._onAuthChange = this._onAuthChange.bind(this);
   }
 
@@ -98,10 +97,9 @@ class AppHeader extends LitElement {
     window.dispatchEvent(new CustomEvent('auth-changed'));
     window.location.hash = '#login';
     
-    
     const offcanvas = document.querySelector('#offcanvasNavbar');
     if (offcanvas) {
-      const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvas);
+      const bsOffcanvas = window.bootstrap.Offcanvas.getInstance(offcanvas);
       if (bsOffcanvas) bsOffcanvas.hide();
     }
   }
@@ -112,7 +110,7 @@ class AppHeader extends LitElement {
     window.dispatchEvent(new CustomEvent('locale-changed', { detail: { locale } }));
     const offcanvas = document.querySelector('#offcanvasNavbar');
     if (offcanvas) {
-      const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvas);
+      const bsOffcanvas = window.bootstrap.Offcanvas.getInstance(offcanvas);
       if (bsOffcanvas) bsOffcanvas.hide();
     }
   }
