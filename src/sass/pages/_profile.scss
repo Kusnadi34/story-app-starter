@@ -1,0 +1,77 @@
+@use '../abstracts/variables' as *;
+
+.profile-page {
+  padding: 20px 0;
+}
+
+.profile-container {
+  background: $glass-bg;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid $glass-border;
+  padding: 40px 28px;
+  border-radius: $border-radius-lg;
+  box-shadow: $glass-shadow;
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+  
+
+  .profile-avatar {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 6px solid $secondary;
+    box-shadow: $box-shadow-sm;
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    font-family: $headings-font-family;
+    font-weight: 900;
+    color: $primary;
+    margin-bottom: 4px;
+  }
+
+  .profile-title {
+    color: $secondary;
+    font-weight: 600;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+  }
+
+  .profile-bio {
+    color: $body-color;
+    opacity: 0.8;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .profile-detail {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    
+    span {
+      background: #fef3c7;
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      color: $dark;
+    }
+  }
+
+  .skill-badge {
+    display: inline-block;
+    background: $primary;
+    color: #ffffff;
+    padding: 4px 16px;
+    border-radius: 50px;
+    margin: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+}

@@ -1,0 +1,23 @@
+@use '../abstracts/variables' as *;
+
+.auth-page {
+  padding: 40px 0;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+
+  .auth-container {
+    background: $glass-bg;
+    backdrop-filter: blur(8px);
+    border: 1px solid $glass-border;
+    padding: 40px 30px;
+    border-radius: $border-radius-lg;
+    box-shadow: $glass-shadow;
+    width: 100%;
+    
+    h2 {
+      font-family: $headings-font-family;
+      color: $primary;
+    }
+  }
+}
