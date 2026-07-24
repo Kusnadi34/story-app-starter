@@ -30,6 +30,8 @@
   },
   "dependencies": {
     "@lit/localize": "^0.12.0",
+    "axios": "^1.6.0",
+    "bootstrap-icons": "^1.11.0",
     "@popperjs/core": "^2.11.6",
     "bootstrap": "^5.2.2",
     "lit": "^2.7.0"
