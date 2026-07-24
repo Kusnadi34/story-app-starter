@@ -2,7 +2,7 @@ import '../sass/main.scss';
 import 'bootstrap';
 import 'bootstrap-icons/font/bootstrap-icons.css'; 
 
-import { configureLocalization, getLocale, setLocale } from '@lit/localize';
+import { configureLocalization } from '@lit/localize';
 import api from './services/api.js';
 
 
