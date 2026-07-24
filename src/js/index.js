@@ -1,6 +1,6 @@
 import '../sass/main.scss';
 import 'bootstrap';
-import 'bootstrap-icons/font/bootstrap-icons.css'; 
+// import 'bootstrap-icons/font/bootstrap-icons.css'; 
 
 import { configureLocalization } from '@lit/localize';
 import api from './services/api.js';
