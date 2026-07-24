@@ -10,7 +10,6 @@ class AppHeader extends LitElement {
     super();
     updateWhenLocaleChanges(this);
     this.isAuth = false;
-    
     this._onAuthChange = this._onAuthChange.bind(this);
   }
 
