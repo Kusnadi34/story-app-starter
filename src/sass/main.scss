@@ -1,0 +1,22 @@
+// 1. Abstracts
+@use 'abstracts/variables' as *;
+@use 'abstracts/mixins' as *;
+
+// 2. Base
+@use 'base/reset';
+
+// 3. Layout
+@use 'layout/grid';
+@use 'layout/footer';
+
+// 4. Components
+@use 'components/navbar';
+@use 'components/card';
+@use 'components/form';
+
+// 5. Pages
+@use 'pages/auth';
+@use 'pages/home';
+@use 'pages/add';
+@use 'pages/profile';
+@import "~bootstrap/scss/bootstrap";
