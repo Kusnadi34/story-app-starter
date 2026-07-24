@@ -1,11 +1,9 @@
 import '../sass/main.scss';
 import 'bootstrap';
-// import 'bootstrap-icons/font/bootstrap-icons.css'; 
-
 import { configureLocalization } from '@lit/localize';
 import api from './services/api.js';
 
-
+// Import semua komponen
 import './components/app-header.js';
 import './components/story-list.js';
 import './components/add-story-form.js';
@@ -14,7 +12,7 @@ import './components/app-footer.js';
 import './components/login-form.js';
 import './components/register-form.js';
 
-
+// Setup i18n
 const { getLocale, setLocale, msg, updateWhenLocaleChanges } = configureLocalization({
   sourceLocale: 'en',
   targetLocales: ['en', 'id'],
@@ -26,21 +24,21 @@ const { getLocale, setLocale, msg, updateWhenLocaleChanges } = configureLocaliza
 
 window.__litLocalize = { getLocale, setLocale, msg, updateWhenLocaleChanges };
 
-
+// State global
 let allStories = [];
 let isLoadingStories = false;
 
-
+// Cek autentikasi
 function isAuthenticated() {
   return !!localStorage.getItem('token');
 }
 
-
+// Fetch stories dari API
 async function fetchStories() {
   if (!isAuthenticated()) return;
   
   isLoadingStories = true;
-  renderPage(); 
+  renderPage();
   
   try {
     const response = await api.get('/stories');
@@ -55,19 +53,19 @@ async function fetchStories() {
   }
 }
 
-
+// Render utama
 function renderPage() {
   const app = document.getElementById('app');
   const hash = window.location.hash || '#home';
   const isAuth = isAuthenticated();
 
-  
+  // Redirect ke login jika belum auth
   if (!isAuth && hash !== '#login' && hash !== '#register') {
     window.location.hash = '#login';
     return;
   }
 
-  
+  // Redirect ke home jika sudah auth di halaman auth
   if (isAuth && (hash === '#login' || hash === '#register')) {
     window.location.hash = '#home';
     return;
@@ -97,7 +95,6 @@ function renderPage() {
       } else if (allStories.length === 0) {
         storiesHtml = `<p class="text-center">${t('noStories')}</p>`;
       } else {
-        
         storiesHtml = `<story-list id="storyListComponent"></story-list>`;
       }
 
@@ -179,7 +176,7 @@ function renderPage() {
     <app-footer></app-footer>
   `;
 
-  
+  // Set stories setelah render
   if (hash === '#home' && !isLoadingStories && allStories.length > 0) {
     const storyListEl = document.getElementById('storyListComponent');
     if (storyListEl) {
@@ -188,21 +185,19 @@ function renderPage() {
   }
 }
 
-
+// Inisialisasi aplikasi
 async function initApp() {
   await setLocale('en');
   const locale = getLocale();
   const data = await import(`../locales/${locale}.json`);
   window.__i18n = data.default;
 
-  
   if (isAuthenticated()) {
     await fetchStories();
   }
 
   renderPage();
 
-  
   window.addEventListener('hashchange', () => {
     if (window.location.hash === '#home' && isAuthenticated()) {
       fetchStories();
@@ -211,12 +206,10 @@ async function initApp() {
     }
   });
 
-  
   window.addEventListener('auth-changed', () => {
     renderPage();
   });
 
-  
   window.addEventListener('locale-changed', async (e) => {
     const newLocale = e.detail.locale;
     await setLocale(newLocale);
