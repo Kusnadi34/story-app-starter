@@ -1,0 +1,20 @@
+@mixin card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+}
+
+
+@mixin btn-custom($bg, $color) {
+  background-color: $bg;
+  color: $color;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  &:hover {
+    background-color: darken($bg, 10%);
+    color: $color;
+  }
+}
