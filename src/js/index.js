@@ -1,6 +1,6 @@
 import '../sass/main.scss';
 import 'bootstrap';
-import { configureLocalization, getLocale, setLocale } from '@lit/localize';
+import { configureLocalization } from '@lit/localize'; // ✅ FIX: Hanya import configureLocalization
 
 // Import semua komponen
 import './components/app-header.js';
@@ -14,7 +14,7 @@ import './components/register-form.js';
 import { isAuthenticated, logout, getUserName } from './services/authService';
 import { getStories } from './services/storyService';
 
-// Konfigurasi Localization
+// Konfigurasi Localization (Deklarasi hanya di sini)
 const { getLocale, setLocale, msg, updateWhenLocaleChanges } =
   configureLocalization({
     sourceLocale: 'en',
@@ -80,7 +80,7 @@ async function renderPage() {
             </div>
           </div>
           <div class="container">
-            <story-list .stories="${storiesData}"></story-list>
+            <story-list stories='${JSON.stringify(storiesData)}'></story-list>
           </div>
         </div>
       `;
