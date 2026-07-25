@@ -5,42 +5,54 @@ class StoryList extends LitElement {
     return this;
   }
 
-  static get properties() {
-    return {
-      stories: { type: Array }
-    };
-  }
+  static properties = {
+    stories: { type: Array },
+    loading: { type: Boolean },
+  };
 
   constructor() {
     super();
     this.stories = [];
-  }
-
-  
-  setStories(newStories) {
-    this.stories = newStories;
-    this.requestUpdate();
+    this.loading = false;
   }
 
   render() {
+    if (this.loading) {
+      return html`
+        <div class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      `;
+    }
+
     if (!this.stories || this.stories.length === 0) {
-      return html`<p class="text-center">Belum ada cerita.</p>`;
+      return html`<p class="text-center text-muted py-5">No stories found.</p>`;
     }
 
     return html`
       <div class="row custom-grid">
-        ${this.stories.map(story => html`
-          <div class="col-md-4 col-sm-6 mb-4">
-            <div class="card story-card">
-              <img src="${story.photoUrl}" class="card-img-top" alt="${story.name}" loading="lazy">
-              <div class="card-body">
-                <h5 class="card-title">${story.name}</h5>
-                <p class="card-text">${story.description}</p>
-                <p class="story-date text-muted small">${new Date(story.createdAt).toLocaleDateString()}</p>
+        ${this.stories.map(
+          (story) => html`
+            <div class="col">
+              <div class="card story-card">
+                <img
+                  src="${story.photoUrl}"
+                  class="card-img-top"
+                  alt="${story.name}"
+                />
+                <div class="card-body">
+                  <h5 class="card-title">${story.name}</h5>
+                  <p class="card-text">${story.description}</p>
+                  <p class="story-date text-muted small">
+                    ${new Date(story.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        `)}
+          `
+        )}
       </div>
     `;
   }
