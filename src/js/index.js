@@ -207,8 +207,20 @@ async function initApp() {
     }
   });
 
+  // 🔥 PERBAIKAN 1: Event auth-changed sekarang memicu fetch ulang
   window.addEventListener('auth-changed', () => {
-    renderPage();
+    if (isAuthenticated()) {
+      fetchStories();
+    } else {
+      renderPage();
+    }
+  });
+
+  // 🔥 PERBAIKAN 2: Event story-added untuk refresh setelah tambah cerita
+  window.addEventListener('story-added', () => {
+    if (isAuthenticated()) {
+      fetchStories();
+    }
   });
 
   window.addEventListener('locale-changed', async (e) => {
