@@ -15,6 +15,11 @@ class LoginForm extends LitElement {
     this.showPassword = false;
   }
 
+  // 🔥 TAMBAHKAN INI UNTUK MEMASTIKAN RENDER ULANG
+  firstUpdated() {
+    this.requestUpdate();
+  }
+
   render() {
     return html`
       <div class="auth-container">
@@ -74,7 +79,6 @@ class LoginForm extends LitElement {
     const email = form.querySelector('#loginEmail').value;
     const password = form.querySelector('#loginPassword').value;
 
-    
     if (password.length < 8) {
       this.errorMessage = msg('passwordMin8');
       this.requestUpdate();
@@ -92,10 +96,7 @@ class LoginForm extends LitElement {
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       
-      
       window.dispatchEvent(new CustomEvent('auth-changed'));
-      
-      
       window.location.hash = '#home';
     } catch (error) {
       console.log('Login error:', error);
