@@ -6,7 +6,6 @@
     "start": "webpack serve --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "lint": "eslint src/js/**/*.js",
-    "lint:fix": "eslint src/js/**/*.js --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -21,7 +20,8 @@
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.2",
     "eslint": "^8.57.0",
-    "eslint-plugin-lit": "^1.11.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.1",
     "html-webpack-plugin": "^5.5.0",
     "postcss-loader": "^7.0.1",
     "sass": "^1.56.1",
@@ -37,7 +37,6 @@
     "@popperjs/core": "^2.11.6",
     "axios": "^1.7.7",
     "bootstrap": "^5.2.2",
-    "bootstrap-icons": "^1.11.0",
     "lit": "^2.7.0"
   }
 }
