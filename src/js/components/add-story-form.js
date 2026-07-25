@@ -1,6 +1,6 @@
 import { LitElement, html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
-import api from '../services/api.js';
+import { addStory } from '../services/storyService';
 
 class AddStoryForm extends LitElement {
   createRenderRoot() {
@@ -10,21 +10,22 @@ class AddStoryForm extends LitElement {
   constructor() {
     super();
     updateWhenLocaleChanges(this);
-    this.isSubmitting = false;
-    this.feedbackMessage = '';
-    this.feedbackType = ''; 
+    this.loading = false;
+    this.error = '';
+    this.success = false;
   }
+
+  static properties = {
+    loading: { type: Boolean },
+    error: { type: String },
+    success: { type: Boolean },
+  };
 
   render() {
     return html`
-      ${this.feedbackMessage ? html`
-        <div class="alert alert-${this.feedbackType} alert-dismissible fade show" role="alert">
-          ${this.feedbackMessage}
-          <button type="button" class="btn-close" @click=${() => { this.feedbackMessage = ''; this.requestUpdate(); }}></button>
-        </div>
-      ` : ''}
-
       <form class="custom-form needs-validation" novalidate @submit=${this._handleSubmit}>
+        ${this.error ? html`<div class="alert alert-danger">${this.error}</div>` : ''}
+        ${this.success ? html`<div class="alert alert-success">${msg('formSuccess')}</div>` : ''}
         <div class="mb-3">
           <label for="description" class="form-label">${msg('formDescription')}</label>
           <textarea class="form-control" id="description" rows="3" required></textarea>
@@ -32,12 +33,13 @@ class AddStoryForm extends LitElement {
         </div>
         <div class="mb-3">
           <label for="photo" class="form-label">${msg('formPhoto')}</label>
-          <input type="file" class="form-control" id="photo" accept="image/*" required>
+          <input type="file" class="form-control" id="photo" accept="image/*" required />
           <div class="invalid-feedback">${msg('formPhotoRequired')}</div>
         </div>
-        <button type="submit" class="btn btn-submit w-100" ?disabled=${this.isSubmitting}>
-          ${this.isSubmitting ? html`<span class="spinner-border spinner-border-sm me-2"></span>` : ''}
-          ${msg('formSubmit')}
+        <button type="submit" class="btn btn-submit w-100" ?disabled=${this.loading}>
+          ${this.loading
+            ? html`<span class="spinner-border spinner-border-sm"></span>`
+            : msg('formSubmit')}
         </button>
       </form>
     `;
@@ -46,45 +48,28 @@ class AddStoryForm extends LitElement {
   async _handleSubmit(e) {
     e.preventDefault();
     const form = e.target;
-    const description = form.querySelector('#description').value;
-    const photoFile = form.querySelector('#photo').files[0];
-
-    if (!form.checkValidity() || !photoFile) {
-      e.stopPropagation();
+    if (!form.checkValidity()) {
       form.classList.add('was-validated');
       return;
     }
 
-    const formData = new FormData();
-    formData.append('description', description);
-    formData.append('photo', photoFile);
+    this.error = '';
+    this.success = false;
+    this.loading = true;
 
-    this.isSubmitting = true;
-    this.feedbackMessage = '';
-    this.requestUpdate();
+    const description = form.querySelector('#description').value;
+    const photoFile = form.querySelector('#photo').files[0];
 
     try {
-      // 🔥 PERBAIKAN: HAPUS header Content-Type, biarkan axios yang mengatur boundary
-      const response = await api.post('/stories', formData);
-      
-      console.log('Add story success:', response.data);
-      this.feedbackType = 'success';
-      this.feedbackMessage = msg('formSuccess');
-      
+      await addStory(description, photoFile);
+      this.success = true;
       form.reset();
       form.classList.remove('was-validated');
-      
-      // Dispatch event untuk refresh daftar cerita
-      window.dispatchEvent(new CustomEvent('story-added'));
-      
-    } catch (error) {
-      console.log('Add story error:', error);
-      const msgError = error.response?.data?.message || 'Gagal menambah cerita.';
-      this.feedbackType = 'danger';
-      this.feedbackMessage = msgError;
+      if (window.__refreshStories) window.__refreshStories();
+    } catch (err) {
+      this.error = err.response?.data?.message || msg('formError');
     } finally {
-      this.isSubmitting = false;
-      this.requestUpdate();
+      this.loading = false;
     }
   }
 }
