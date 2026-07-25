@@ -49,14 +49,12 @@ class AddStoryForm extends LitElement {
     const description = form.querySelector('#description').value;
     const photoFile = form.querySelector('#photo').files[0];
 
-    
     if (!form.checkValidity() || !photoFile) {
       e.stopPropagation();
       form.classList.add('was-validated');
       return;
     }
 
-    
     const formData = new FormData();
     formData.append('description', description);
     formData.append('photo', photoFile);
@@ -66,11 +64,8 @@ class AddStoryForm extends LitElement {
     this.requestUpdate();
 
     try {
-      const response = await api.post('/stories', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      // 🔥 PERBAIKAN: HAPUS header Content-Type, biarkan axios yang mengatur boundary
+      const response = await api.post('/stories', formData);
       
       console.log('Add story success:', response.data);
       this.feedbackType = 'success';
@@ -79,7 +74,7 @@ class AddStoryForm extends LitElement {
       form.reset();
       form.classList.remove('was-validated');
       
-      
+      // Dispatch event untuk refresh daftar cerita
       window.dispatchEvent(new CustomEvent('story-added'));
       
     } catch (error) {
