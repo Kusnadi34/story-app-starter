@@ -13,13 +13,18 @@ import './components/app-footer.js';
 import './components/login-form.js';
 import './components/register-form.js';
 
-// Setup i18n
+// 🔥 IMPORT STATIS TERJEMAHAN
+import en from '../locales/en.json';
+import id from '../locales/id.json';
+
+const translations = { en, id };
+
+// Setup i18n dengan @lit/localize
 const { getLocale, setLocale, msg, updateWhenLocaleChanges } = configureLocalization({
   sourceLocale: 'en',
   targetLocales: ['en', 'id'],
   loadLocale: async (locale) => {
-    const data = await import(`../locales/${locale}.json`);
-    return data.default;
+    return translations[locale];
   },
 });
 
@@ -54,6 +59,15 @@ async function fetchStories() {
   }
 }
 
+// 🔥 FUNGSI TERJEMAHAN DENGAN FALLBACK
+function t(key) {
+  if (window.__i18n && window.__i18n[key]) {
+    return window.__i18n[key];
+  }
+  console.warn(`⚠️ Translation missing: ${key}`);
+  return key; // fallback ke key agar tidak error
+}
+
 // Render utama
 function renderPage() {
   const app = document.getElementById('app');
@@ -71,13 +85,6 @@ function renderPage() {
     window.location.hash = '#home';
     return;
   }
-
-  const t = (key) => {
-    if (window.__i18n && window.__i18n[key]) {
-      return window.__i18n[key];
-    }
-    return key;
-  };
 
   let pageContent = '';
 
@@ -188,10 +195,13 @@ function renderPage() {
 
 // Inisialisasi aplikasi
 async function initApp() {
+  // Set locale default
   await setLocale('en');
   const locale = getLocale();
-  const data = await import(`../locales/${locale}.json`);
-  window.__i18n = data.default;
+  
+  // 🔥 ISI window.__i18n DARI OBJEK STATIS
+  window.__i18n = translations[locale];
+  console.log('✅ Translations loaded:', window.__i18n);
 
   if (isAuthenticated()) {
     await fetchStories();
@@ -207,7 +217,6 @@ async function initApp() {
     }
   });
 
-  // 🔥 PERBAIKAN 1: Event auth-changed sekarang memicu fetch ulang
   window.addEventListener('auth-changed', () => {
     if (isAuthenticated()) {
       fetchStories();
@@ -216,7 +225,6 @@ async function initApp() {
     }
   });
 
-  // 🔥 PERBAIKAN 2: Event story-added untuk refresh setelah tambah cerita
   window.addEventListener('story-added', () => {
     if (isAuthenticated()) {
       fetchStories();
@@ -226,8 +234,8 @@ async function initApp() {
   window.addEventListener('locale-changed', async (e) => {
     const newLocale = e.detail.locale;
     await setLocale(newLocale);
-    const newData = await import(`../locales/${newLocale}.json`);
-    window.__i18n = newData.default;
+    window.__i18n = translations[newLocale];
+    console.log(`🌐 Locale changed to: ${newLocale}`, window.__i18n);
     renderPage();
   });
 }
