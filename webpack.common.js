@@ -44,6 +44,11 @@ module.exports = {
         test: /\.json$/,
         type: 'json',
       },
+      // TAMBAHKAN RULE UNTUK GAMBAR
+      {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        type: 'asset/resource',
+      },
     ],
   },
   plugins: [
