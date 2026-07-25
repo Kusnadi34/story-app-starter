@@ -44,7 +44,6 @@ module.exports = {
         test: /\.json$/,
         type: 'json',
       },
-      // TAMBAHKAN RULE UNTUK GAMBAR
       {
         test: /\.(png|jpe?g|gif|svg)$/i,
         type: 'asset/resource',
@@ -62,6 +61,11 @@ module.exports = {
         {
           from: path.resolve(__dirname, 'src/public/'),
           to: path.resolve(__dirname, 'dist/'),
+        },
+        // ✅ TAMBAHKAN INI: salin folder locales ke dist
+        {
+          from: path.resolve(__dirname, 'src/locales/'),
+          to: path.resolve(__dirname, 'dist/locales/'),
         },
       ],
     }),
