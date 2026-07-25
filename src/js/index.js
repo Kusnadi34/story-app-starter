@@ -4,7 +4,7 @@ window.bootstrap = bootstrap;
 import { configureLocalization } from '@lit/localize';
 import api from './services/api.js';
 
-// Import semua komponen
+// Import statis semua komponen
 import './components/app-header.js';
 import './components/story-list.js';
 import './components/add-story-form.js';
@@ -13,39 +13,44 @@ import './components/app-footer.js';
 import './components/login-form.js';
 import './components/register-form.js';
 
-// 🔥 IMPORT STATIS TERJEMAHAN
+// 🔥 IMPORT STATIS FILE JSON TERJEMAHAN
 import en from '../locales/en.json';
 import id from '../locales/id.json';
 
 const translations = { en, id };
 
-// Setup i18n dengan @lit/localize
+// 🔥 KONFIGURASI LOCALIZE DENGAN LOG
 const { getLocale, setLocale, msg, updateWhenLocaleChanges } = configureLocalization({
   sourceLocale: 'en',
   targetLocales: ['en', 'id'],
   loadLocale: async (locale) => {
-    return translations[locale];
+    console.log(`🌐 Loading locale: ${locale}`);
+    const data = translations[locale];
+    if (!data) {
+      console.error(`❌ Locale ${locale} not found!`);
+      return {};
+    }
+    console.log(`✅ Locale ${locale} loaded:`, data);
+    return data;
   },
 });
 
+// Ekspos ke global agar komponen (jika perlu) dan index.js bisa pakai
 window.__litLocalize = { getLocale, setLocale, msg, updateWhenLocaleChanges };
+window.__i18n = translations.en; // fallback
 
 // State global
 let allStories = [];
 let isLoadingStories = false;
 
-// Cek autentikasi
 function isAuthenticated() {
   return !!localStorage.getItem('token');
 }
 
-// Fetch stories dari API
 async function fetchStories() {
   if (!isAuthenticated()) return;
-  
   isLoadingStories = true;
   renderPage();
-  
   try {
     const response = await api.get('/stories');
     allStories = response.data.listStory || [];
@@ -59,28 +64,24 @@ async function fetchStories() {
   }
 }
 
-// 🔥 FUNGSI TERJEMAHAN DENGAN FALLBACK
+// Fungsi t() untuk index.js (tidak untuk komponen, komponen pakai msg)
 function t(key) {
   if (window.__i18n && window.__i18n[key]) {
     return window.__i18n[key];
   }
   console.warn(`⚠️ Translation missing: ${key}`);
-  return key; // fallback ke key agar tidak error
+  return key;
 }
 
-// Render utama
 function renderPage() {
   const app = document.getElementById('app');
   const hash = window.location.hash || '#home';
   const isAuth = isAuthenticated();
 
-  // Redirect ke login jika belum auth
   if (!isAuth && hash !== '#login' && hash !== '#register') {
     window.location.hash = '#login';
     return;
   }
-
-  // Redirect ke home jika sudah auth di halaman auth
   if (isAuth && (hash === '#login' || hash === '#register')) {
     window.location.hash = '#home';
     return;
@@ -105,7 +106,6 @@ function renderPage() {
       } else {
         storiesHtml = `<story-list id="storyListComponent"></story-list>`;
       }
-
       pageContent = `
         <div class="home-page">
           <div class="hero text-center">
@@ -114,13 +114,10 @@ function renderPage() {
               <p class="lead hero-subtitle">${t('welcomeSubtitle')}</p>
             </div>
           </div>
-          <div class="container">
-            ${storiesHtml}
-          </div>
+          <div class="container">${storiesHtml}</div>
         </div>
       `;
       break;
-
     case '#add':
       pageContent = `
         <div class="add-page">
@@ -133,75 +130,72 @@ function renderPage() {
         </div>
       `;
       break;
-
     case '#profile':
       pageContent = `
         <div class="profile-page">
-          <div class="container">
-            <profile-card></profile-card>
-          </div>
+          <div class="container"><profile-card></profile-card></div>
         </div>
       `;
       break;
-
     case '#login':
       pageContent = `
         <div class="auth-page">
           <div class="container">
             <div class="row justify-content-center">
-              <div class="col-md-6 col-lg-5">
-                <login-form></login-form>
-              </div>
+              <div class="col-md-6 col-lg-5"><login-form></login-form></div>
             </div>
           </div>
         </div>
       `;
       break;
-
     case '#register':
       pageContent = `
         <div class="auth-page">
           <div class="container">
             <div class="row justify-content-center">
-              <div class="col-md-6 col-lg-5">
-                <register-form></register-form>
-              </div>
+              <div class="col-md-6 col-lg-5"><register-form></register-form></div>
             </div>
           </div>
         </div>
       `;
       break;
-
     default:
       pageContent = `<h2 class="text-center">${t('pageNotFound')}</h2>`;
   }
 
   app.innerHTML = `
     <app-header></app-header>
-    <main class="py-4">
-      ${pageContent}
-    </main>
+    <main class="py-4">${pageContent}</main>
     <app-footer></app-footer>
   `;
 
-  // Set stories setelah render
   if (hash === '#home' && !isLoadingStories && allStories.length > 0) {
     const storyListEl = document.getElementById('storyListComponent');
-    if (storyListEl) {
-      storyListEl.stories = allStories;
-    }
+    if (storyListEl) storyListEl.stories = allStories;
   }
 }
 
-// Inisialisasi aplikasi
 async function initApp() {
-  // Set locale default
-  await setLocale('en');
-  const locale = getLocale();
+  console.log('🚀 Initializing app...');
   
-  // 🔥 ISI window.__i18n DARI OBJEK STATIS
+  // 🔥 SET LOCALE DAN LOG
+  try {
+    await setLocale('en');
+    console.log('✅ Locale set to en');
+  } catch (e) {
+    console.error('❌ Failed to set locale:', e);
+  }
+
+  const locale = getLocale();
+  console.log(`🔍 Current locale: ${locale}`);
+  
+  // 🔥 ISI WINDOW.__i18n
   window.__i18n = translations[locale];
-  console.log('✅ Translations loaded:', window.__i18n);
+  console.log('📦 Translation data:', window.__i18n);
+
+  // 🔥 TEST MSG LANGSUNG DI CONSOLE
+  console.log('🧪 Test msg("loginTitle"):', msg('loginTitle'));
+  console.log('🧪 Test msg("registerTitle"):', msg('registerTitle'));
 
   if (isAuthenticated()) {
     await fetchStories();
@@ -226,16 +220,14 @@ async function initApp() {
   });
 
   window.addEventListener('story-added', () => {
-    if (isAuthenticated()) {
-      fetchStories();
-    }
+    if (isAuthenticated()) fetchStories();
   });
 
   window.addEventListener('locale-changed', async (e) => {
     const newLocale = e.detail.locale;
     await setLocale(newLocale);
     window.__i18n = translations[newLocale];
-    console.log(`🌐 Locale changed to: ${newLocale}`, window.__i18n);
+    console.log(`🌐 Locale changed to: ${newLocale}`);
     renderPage();
   });
 }
