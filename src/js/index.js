@@ -1,6 +1,6 @@
 import '../sass/main.scss';
 import 'bootstrap';
-import { configureLocalization } from '@lit/localize'; // ✅ hanya import configureLocalization
+import { configureLocalization } from '@lit/localize';
 
 // Import semua komponen
 import './components/app-header.js';
@@ -14,14 +14,29 @@ import './components/register-form.js';
 import { isAuthenticated, logout, getUserName } from './services/authService';
 import { getStories } from './services/storyService';
 
-// Konfigurasi Localization (deklarasi di sini)
+// Fungsi untuk memuat file terjemahan via fetch (aman untuk GitHub Pages)
+async function loadLocale(locale) {
+  try {
+    const response = await fetch(`locales/${locale}.json`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return await response.json();
+  } catch (error) {
+    console.error(`Gagal memuat locale ${locale}:`, error);
+    // Fallback ke en jika gagal
+    if (locale !== 'en') {
+      return loadLocale('en');
+    }
+    return {}; // fallback kosong
+  }
+}
+
+// Konfigurasi Localization
 const { getLocale, setLocale, msg, updateWhenLocaleChanges } =
   configureLocalization({
     sourceLocale: 'en',
     targetLocales: ['en', 'id'],
     loadLocale: async (locale) => {
-      const data = await import(`../locales/${locale}.json`);
-      return data.default;
+      return await loadLocale(locale);
     },
   });
 
@@ -61,7 +76,7 @@ async function renderPage() {
       const response = await getStories();
       storiesData = response.data.listStory || [];
     } catch (error) {
-      console.error('Failed to fetch stories:', error);
+      console.error('Gagal mengambil stories:', error);
       storiesData = [];
     }
   }
@@ -119,10 +134,13 @@ async function renderPage() {
 
 // Inisialisasi Aplikasi
 async function initApp() {
+  // Set locale awal (en)
   await setLocale('en');
   const locale = getLocale();
-  const data = await import(`../locales/${locale}.json`);
-  window.__i18n = data.default;
+  
+  // Muat terjemahan awal via fetch
+  const data = await loadLocale(locale);
+  window.__i18n = data;
 
   window.addEventListener('hashchange', () => {
     renderPage();
@@ -130,6 +148,15 @@ async function initApp() {
 
   window.addEventListener('auth-changed', () => {
     storiesData = [];
+    renderPage();
+  });
+
+  // Event listener untuk perubahan bahasa (dari header)
+  window.addEventListener('locale-changed', async (e) => {
+    const newLocale = e.detail.locale;
+    await setLocale(newLocale);
+    const newData = await loadLocale(newLocale);
+    window.__i18n = newData;
     renderPage();
   });
 
@@ -145,7 +172,7 @@ async function initApp() {
       storiesData = response.data.listStory || [];
       renderPage();
     } catch (error) {
-      console.error('Refresh failed:', error);
+      console.error('Refresh stories gagal:', error);
     }
   };
 
