@@ -5,12 +5,15 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   entry: {
-    app: path.resolve(__dirname, 'src/js/index.js'),
+    app: path.resolve(__dirname, 'src/js/index.ts'),
   },
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
+  },
+  resolve: {
+    extensions: ['.ts', '.js', '.json'],
   },
   module: {
     rules: [
@@ -23,7 +26,10 @@ module.exports = {
             loader: 'postcss-loader',
             options: {
               postcssOptions: {
-                plugins: () => [require('autoprefixer')],
+                plugins: () => [
+                  require('tailwindcss'),
+                  require('autoprefixer'),
+                ],
               },
             },
           },
@@ -31,12 +37,15 @@ module.exports = {
         ],
       },
       {
-        test: /\.js$/,
+        test: /\.(ts|js)$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env'],
+            presets: [
+              '@babel/preset-env',
+              '@babel/preset-typescript'
+            ],
           },
         },
       },
@@ -45,14 +54,14 @@ module.exports = {
         type: 'json',
       },
       {
-        test: /\.(png|jpe?g|gif|svg)$/i,
+        test: /\.(png|jpe?g|gif|svg|woff2?|ttf|eot)$/i,
         type: 'asset/resource',
       },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Home',
+      title: 'Story App',
       filename: 'index.html',
       template: path.resolve(__dirname, 'src/views/index.html'),
     }),
@@ -62,16 +71,14 @@ module.exports = {
           from: path.resolve(__dirname, 'src/public/'),
           to: path.resolve(__dirname, 'dist/'),
         },
-        // ✅ TAMBAHKAN INI: salin folder locales ke dist
+        // Copy generated locale files from lit-localize build
         {
-          from: path.resolve(__dirname, 'src/locales/'),
+          from: path.resolve(__dirname, 'src/generated/locales/'),
           to: path.resolve(__dirname, 'dist/locales/'),
+          noErrorOnMissing: true,
         },
       ],
     }),
     new CleanWebpackPlugin(),
   ],
-  resolve: {
-    extensions: ['.js'],
-  },
 };
