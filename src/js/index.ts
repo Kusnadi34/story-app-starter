@@ -2,20 +2,19 @@ import '../sass/main.scss';
 import 'bootstrap';
 import 'flowbite';
 
-import { configureLocalization, LocalizeMixin } from '@lit/localize';
-import { LitElement, html } from 'lit';
+import { configureLocalization } from '@lit/localize';
 
-// Import semua komponen (TypeScript)
-import './components/app-header.js';
-import './components/story-list.js';
-import './components/add-story-form.js';
-import './components/profile-card.js';
-import './components/app-footer.js';
-import './components/login-form.js';
-import './components/register-form.js';
+// Import semua komponen (ubah .js menjadi .ts)
+import './components/app-header.ts';
+import './components/story-list.ts';
+import './components/add-story-form.ts';
+import './components/profile-card.ts';
+import './components/app-footer.ts';
+import './components/login-form.ts';
+import './components/register-form.ts';
 
-import { isAuthenticated, logout, getUserName } from './services/authService.js';
-import { getStories } from './services/storyService.js';
+import { isAuthenticated, logout, getUserName } from './services/authService.ts';
+import { getStories } from './services/storyService.ts';
 
 // Interface untuk tipe data Story
 interface Story {
@@ -26,29 +25,36 @@ interface Story {
   createdAt: string;
 }
 
-interface I18nMap {
-  [key: string]: string;
+// Fungsi untuk memuat file terjemahan dengan fetch
+async function loadLocale(locale: string) {
+  try {
+    const response = await fetch(`locales/${locale}.json`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return await response.json();
+  } catch (error) {
+    console.error(`Gagal memuat locale ${locale}:`, error);
+    if (locale !== 'en') {
+      return loadLocale('en');
+    }
+    return {};
+  }
 }
 
-// Lokalisasi dengan XLIFF
+// Konfigurasi Lokalisasi
 const { getLocale, setLocale, msg, updateWhenLocaleChanges } =
   configureLocalization({
     sourceLocale: 'en',
     targetLocales: ['id'],
     loadLocale: async (locale: string) => {
-      // Muat file hasil build dari XLIFF
-      const data = await import(`../generated/locales/${locale}.js`);
-      return data.default || data;
+      return await loadLocale(locale);
     },
   });
 
 window.__litLocalize = { getLocale, setLocale, msg, updateWhenLocaleChanges };
 
-// State global
 let storiesData: Story[] = [];
 let currentUser: string = '';
 
-// Fungsi render utama
 async function renderPage(): Promise<void> {
   const app = document.getElementById('app');
   if (!app) return;
@@ -56,7 +62,6 @@ async function renderPage(): Promise<void> {
   const hash: string = window.location.hash || '#home';
   const t = (key: string): string => (window as any).__i18n?.[key] || key;
 
-  // 1. Cek Autentikasi
   if (!isAuthenticated()) {
     let authContent = '';
     if (hash === '#register') {
@@ -74,10 +79,8 @@ async function renderPage(): Promise<void> {
     return;
   }
 
-  // 2. Sudah Login
   currentUser = getUserName();
 
-  // Ambil data stories jika di halaman home
   if (hash === '#home') {
     try {
       const response = await getStories();
@@ -137,15 +140,12 @@ async function renderPage(): Promise<void> {
   `;
 }
 
-// Inisialisasi Aplikasi
 async function initApp(): Promise<void> {
-  // Set locale default
   await setLocale('en');
   const locale = getLocale();
-  const data = await import(`../generated/locales/${locale}.js`);
-  (window as any).__i18n = data.default || data;
+  const data = await loadLocale(locale);
+  (window as any).__i18n = data;
 
-  // Event listeners
   window.addEventListener('hashchange', () => {
     renderPage();
   });
@@ -159,8 +159,8 @@ async function initApp(): Promise<void> {
     const customEvent = e as CustomEvent<{ locale: string }>;
     const newLocale = customEvent.detail.locale;
     await setLocale(newLocale);
-    const newData = await import(`../generated/locales/${newLocale}.js`);
-    (window as any).__i18n = newData.default || newData;
+    const newData = await loadLocale(newLocale);
+    (window as any).__i18n = newData;
     renderPage();
   });
 
