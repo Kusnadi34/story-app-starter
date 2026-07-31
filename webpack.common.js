@@ -71,7 +71,11 @@ module.exports = {
           from: path.resolve(__dirname, 'src/public/'),
           to: path.resolve(__dirname, 'dist/'),
         },
-        // Hapus bagian copy generated/locales karena tidak digunakan
+        // ✅ SALIN FOLDER LOCALES KE DIST
+        {
+          from: path.resolve(__dirname, 'src/locales/'),
+          to: path.resolve(__dirname, 'dist/locales/'),
+        },
       ],
     }),
     new CleanWebpackPlugin(),
