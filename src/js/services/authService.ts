@@ -1,4 +1,4 @@
-import api from '../api/axiosInstance.js';
+import api from '../api/axiosInstance.ts';
 
 export const register = (name: string, email: string, password: string) => {
   return api.post('/register', { name, email, password });
