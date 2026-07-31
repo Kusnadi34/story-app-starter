@@ -1,4 +1,4 @@
-// 1. Abstracts (harus paling atas)
+// 1. @use rules HARUS di awal
 @use 'abstracts/variables' as *;
 @use 'abstracts/mixins' as *;
 
@@ -20,11 +20,11 @@
 @use 'pages/add';
 @use 'pages/profile';
 
-// 6. Tailwind (setelah semua @use)
-// @import 'tailwindcss/base';
-// @import 'tailwindcss/components';
-// @import 'tailwindcss/utilities';
+// 6. Tailwind (gunakan ~ agar sass-loader menemukan di node_modules)
+@import '~tailwindcss/base';
+@import '~tailwindcss/components';
+@import '~tailwindcss/utilities';
 
-// 7. Bootstrap & Icons (paling akhir)
-@import "~bootstrap/scss/bootstrap";
-@import "~bootstrap-icons/font/bootstrap-icons.css";
+// 7. Bootstrap & Icons (gunakan ~ juga)
+@import '~bootstrap/scss/bootstrap';
+@import '~bootstrap-icons/font/bootstrap-icons.css';
