@@ -1,8 +1,11 @@
 import '../sass/main.scss';
 import 'bootstrap';
-import { configureLocalization } from '@lit/localize';
+import 'flowbite';
 
-// Import semua komponen
+import { configureLocalization, LocalizeMixin } from '@lit/localize';
+import { LitElement, html } from 'lit';
+
+// Import semua komponen (TypeScript)
 import './components/app-header.js';
 import './components/story-list.js';
 import './components/add-story-form.js';
@@ -11,45 +14,49 @@ import './components/app-footer.js';
 import './components/login-form.js';
 import './components/register-form.js';
 
-import { isAuthenticated, logout, getUserName } from './services/authService';
-import { getStories } from './services/storyService';
+import { isAuthenticated, logout, getUserName } from './services/authService.js';
+import { getStories } from './services/storyService.js';
 
-// Fungsi untuk memuat file terjemahan via fetch (aman untuk GitHub Pages)
-async function loadLocale(locale) {
-  try {
-    const response = await fetch(`locales/${locale}.json`);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    return await response.json();
-  } catch (error) {
-    console.error(`Gagal memuat locale ${locale}:`, error);
-    // Fallback ke en jika gagal
-    if (locale !== 'en') {
-      return loadLocale('en');
-    }
-    return {}; // fallback kosong
-  }
+// Interface untuk tipe data Story
+interface Story {
+  id: string;
+  name: string;
+  description: string;
+  photoUrl: string;
+  createdAt: string;
 }
 
-// Konfigurasi Localization
+interface I18nMap {
+  [key: string]: string;
+}
+
+// Lokalisasi dengan XLIFF
 const { getLocale, setLocale, msg, updateWhenLocaleChanges } =
   configureLocalization({
     sourceLocale: 'en',
-    targetLocales: ['en', 'id'],
-    loadLocale: async (locale) => {
-      return await loadLocale(locale);
+    targetLocales: ['id'],
+    loadLocale: async (locale: string) => {
+      // Muat file hasil build dari XLIFF
+      const data = await import(`../generated/locales/${locale}.js`);
+      return data.default || data;
     },
   });
 
 window.__litLocalize = { getLocale, setLocale, msg, updateWhenLocaleChanges };
 
-let storiesData = [];
-let currentUser = '';
+// State global
+let storiesData: Story[] = [];
+let currentUser: string = '';
 
-async function renderPage() {
+// Fungsi render utama
+async function renderPage(): Promise<void> {
   const app = document.getElementById('app');
-  const hash = window.location.hash || '#home';
+  if (!app) return;
 
-  // 1. CEK AUTHENTIKASI
+  const hash: string = window.location.hash || '#home';
+  const t = (key: string): string => (window as any).__i18n?.[key] || key;
+
+  // 1. Cek Autentikasi
   if (!isAuthenticated()) {
     let authContent = '';
     if (hash === '#register') {
@@ -67,7 +74,7 @@ async function renderPage() {
     return;
   }
 
-  // 2. SUDAH LOGIN
+  // 2. Sudah Login
   currentUser = getUserName();
 
   // Ambil data stories jika di halaman home
@@ -80,8 +87,6 @@ async function renderPage() {
       storiesData = [];
     }
   }
-
-  const t = (key) => window.__i18n?.[key] || key;
 
   let pageContent = '';
   switch (hash) {
@@ -104,7 +109,7 @@ async function renderPage() {
       pageContent = `
         <div class="add-page">
           <div class="container">
-            <div class="form-container">
+            <div class="form-container max-w-2xl mx-auto">
               <h2 class="text-center mb-4 form-page-title">${t('addTitle')}</h2>
               <add-story-form></add-story-form>
             </div>
@@ -133,15 +138,14 @@ async function renderPage() {
 }
 
 // Inisialisasi Aplikasi
-async function initApp() {
-  // Set locale awal (en)
+async function initApp(): Promise<void> {
+  // Set locale default
   await setLocale('en');
   const locale = getLocale();
-  
-  // Muat terjemahan awal via fetch
-  const data = await loadLocale(locale);
-  window.__i18n = data;
+  const data = await import(`../generated/locales/${locale}.js`);
+  (window as any).__i18n = data.default || data;
 
+  // Event listeners
   window.addEventListener('hashchange', () => {
     renderPage();
   });
@@ -151,22 +155,22 @@ async function initApp() {
     renderPage();
   });
 
-  // Event listener untuk perubahan bahasa (dari header)
-  window.addEventListener('locale-changed', async (e) => {
-    const newLocale = e.detail.locale;
+  window.addEventListener('locale-changed', async (e: Event) => {
+    const customEvent = e as CustomEvent<{ locale: string }>;
+    const newLocale = customEvent.detail.locale;
     await setLocale(newLocale);
-    const newData = await loadLocale(newLocale);
-    window.__i18n = newData;
+    const newData = await import(`../generated/locales/${newLocale}.js`);
+    (window as any).__i18n = newData.default || newData;
     renderPage();
   });
 
-  window.__logout = () => {
+  (window as any).__logout = () => {
     logout();
     storiesData = [];
     window.dispatchEvent(new CustomEvent('auth-changed'));
   };
 
-  window.__refreshStories = async () => {
+  (window as any).__refreshStories = async () => {
     try {
       const response = await getStories();
       storiesData = response.data.listStory || [];
