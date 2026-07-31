@@ -6,9 +6,7 @@
     "start": "webpack serve --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "lint": "eslint src/**/*.{js,ts}",
-    "lint:fix": "eslint src/**/*.{js,ts} --fix",
-    "extract": "lit-localize extract",
-    "build:ts": "tsc"
+    "lint:fix": "eslint src/**/*.{js,ts} --fix"
   },
   "keywords": [],
   "author": "your_name <your_email>",
