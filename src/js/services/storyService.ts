@@ -1,10 +1,10 @@
-import api from '../api/axiosInstance';
+import api from '../api/axiosInstance.ts';
 
 export const getStories = () => {
   return api.get('/stories');
 };
 
-export const addStory = (description, photoFile) => {
+export const addStory = (description: string, photoFile: File) => {
   const formData = new FormData();
   formData.append('description', description);
   formData.append('photo', photoFile);
