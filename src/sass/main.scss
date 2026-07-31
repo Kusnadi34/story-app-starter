@@ -1,30 +1,30 @@
-// 1. Tailwind
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
-
-// 2. Abstracts
+// 1. Abstracts (harus paling atas)
 @use 'abstracts/variables' as *;
 @use 'abstracts/mixins' as *;
 
-// 3. Base
+// 2. Base
 @use 'base/reset';
 
-// 4. Layout
+// 3. Layout
 @use 'layout/grid';
 @use 'layout/footer';
 
-// 5. Components
+// 4. Components
 @use 'components/navbar';
 @use 'components/card';
 @use 'components/form';
 
-// 6. Pages
+// 5. Pages
 @use 'pages/auth';
 @use 'pages/home';
 @use 'pages/add';
 @use 'pages/profile';
 
-// 7. Bootstrap (load setelah Tailwind agar tidak bertabrakan)
+// 6. Tailwind (setelah semua @use)
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+// 7. Bootstrap & Icons (paling akhir)
 @import "~bootstrap/scss/bootstrap";
 @import "~bootstrap-icons/font/bootstrap-icons.css";
