@@ -5,7 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   entry: {
-    app: path.resolve(__dirname, 'src/js/index.ts'), // ✅ entry ke .ts
+    app: path.resolve(__dirname, 'src/js/index.ts'),
   },
   output: {
     filename: '[name].bundle.js',
@@ -71,12 +71,7 @@ module.exports = {
           from: path.resolve(__dirname, 'src/public/'),
           to: path.resolve(__dirname, 'dist/'),
         },
-        // Copy generated locale files from lit-localize build
-        {
-          from: path.resolve(__dirname, 'src/generated/locales/'),
-          to: path.resolve(__dirname, 'dist/locales/'),
-          noErrorOnMissing: true,
-        },
+        // Hapus bagian copy generated/locales karena tidak digunakan
       ],
     }),
     new CleanWebpackPlugin(),
