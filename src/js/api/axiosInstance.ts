@@ -1,6 +1,6 @@
-import axios, { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
+import axios from 'axios';
 
-const api: AxiosInstance = axios.create({
+const api = axios.create({
   baseURL: 'https://story-api.dicoding.dev/v1',
   headers: {
     'Content-Type': 'application/json',
@@ -8,7 +8,7 @@ const api: AxiosInstance = axios.create({
 });
 
 api.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
+  (config) => {
     const token = localStorage.getItem('accessToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
