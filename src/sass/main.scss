@@ -21,9 +21,9 @@
 @use 'pages/profile';
 
 // 6. Tailwind (gunakan ~ agar sass-loader menemukan di node_modules)
-@import '~tailwindcss/base';
-@import '~tailwindcss/components';
-@import '~tailwindcss/utilities';
+// @import '~tailwindcss/base';
+// @import '~tailwindcss/components';
+// @import '~tailwindcss/utilities';
 
 // 7. Bootstrap & Icons (gunakan ~ juga)
 @import '~bootstrap/scss/bootstrap';
