@@ -6,15 +6,12 @@
     "include": ["src/**/*.ts"]
   },
   "output": {
-    "mode": "xliff",
-    "outputDir": "./src/locales/xliff"
+    "mode": "localeFiles",
+    "outputDir": "./src/generated/locales",
+    "localeFilesModule": "js"
   },
   "interchange": {
-    "xliff": {
-      "generate": {
-        "sourceLocale": "en",
-        "targetLocale": "id"
-      }
-    }
+    "format": "xliff",
+    "xliffDir": "./src/locales/"
   }
 }
