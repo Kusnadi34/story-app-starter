@@ -71,13 +71,13 @@ module.exports = {
           from: path.resolve(__dirname, 'src/public/'),
           to: path.resolve(__dirname, 'dist/'),
         },
-        // ✅ SALIN FOLDER LOCALES KE DIST
         {
-          from: path.resolve(__dirname, 'src/locales/'),
-          to: path.resolve(__dirname, 'dist/locales/'),
+          from: path.resolve(__dirname, 'src/generated/'),
+          to: path.resolve(__dirname, 'dist/generated/'),
+          noErrorOnMissing: true,
         },
-      ],
-    }),
+       ],
+     }),
     new CleanWebpackPlugin(),
   ],
 };
