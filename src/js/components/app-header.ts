@@ -70,6 +70,9 @@ class AppHeader extends LitElement {
                           >${msg('logout')}</a
                         >
                       </li>
+                      <li class="nav-item">
+                      <locale-picker class="form-select-sm"></locale-picker>
+                      </li>
                     `
                   : ''}
                 <!-- Dropdown Bahasa dengan Flowbite -->
