@@ -1,8 +1,16 @@
 import { html } from 'lit';
-import { allLocales } from '../../generated/locale-codes';
 import { updateWhenLocaleChanges } from '@lit/localize';
 import { getLocale, localeNames, setLocaleFromUrl } from '../localization';
 import LitWithoutShadowDom from './base/lit-without-shadow-dom';
+
+// Import allLocales secara dinamis
+let allLocales: string[] = ['en', 'id'];
+try {
+  const codes = await import('../../generated/locale-codes');
+  allLocales = codes.allLocales || ['en', 'id'];
+} catch {
+  console.warn('Locale codes not found, using defaults');
+}
 
 class LocalePicker extends LitWithoutShadowDom {
   constructor() {
