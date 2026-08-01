@@ -1,5 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
+import './locale-picker';
 
 class AppFooter extends LitElement {
   static styles = css`
@@ -37,10 +38,12 @@ class AppFooter extends LitElement {
     return html`
       <footer class="footer">
         <div class="container-inner">
+          <locale-picker class="d-block mb-3"></locale-picker>
           <p>${msg('footerText')} <span class="heart">❤️</span></p>
         </div>
       </footer>
     `;
   }
 }
+
 customElements.define('app-footer', AppFooter);
