@@ -2,21 +2,19 @@ import '../sass/main.scss';
 import 'bootstrap';
 import 'flowbite';
 
-import { configureLocalization } from '@lit/localize';
+import './components/app-header';
+import './components/story-list';
+import './components/add-story-form';
+import './components/profile-card';
+import './components/app-footer';
+import './components/login-form';
+import './components/register-form';
+import './components/locale-picker';
 
-// Import semua komponen (ubah .js menjadi .ts)
-import './components/app-header.ts';
-import './components/story-list.ts';
-import './components/add-story-form.ts';
-import './components/profile-card.ts';
-import './components/app-footer.ts';
-import './components/login-form.ts';
-import './components/register-form.ts';
+import { isAuthenticated, logout, getUserName } from './services/authService';
+import { getStories } from './services/storyService';
+import { setLocaleFromUrl, getLocale } from './localization';
 
-import { isAuthenticated, logout, getUserName } from './services/authService.ts';
-import { getStories } from './services/storyService.ts';
-
-// Interface untuk tipe data Story
 interface Story {
   id: string;
   name: string;
@@ -25,42 +23,13 @@ interface Story {
   createdAt: string;
 }
 
-// Fungsi untuk memuat file terjemahan dengan fetch
-async function loadLocale(locale: string) {
-  try {
-    const response = await fetch(`locales/${locale}.json`);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    return await response.json();
-  } catch (error) {
-    console.error(`Gagal memuat locale ${locale}:`, error);
-    if (locale !== 'en') {
-      return loadLocale('en');
-    }
-    return {};
-  }
-}
-
-// Konfigurasi Lokalisasi
-const { getLocale, setLocale, msg, updateWhenLocaleChanges } =
-  configureLocalization({
-    sourceLocale: 'en',
-    targetLocales: ['id'],
-    loadLocale: async (locale: string) => {
-      return await loadLocale(locale);
-    },
-  });
-
-window.__litLocalize = { getLocale, setLocale, msg, updateWhenLocaleChanges };
-
 let storiesData: Story[] = [];
-let currentUser: string = '';
 
 async function renderPage(): Promise<void> {
   const app = document.getElementById('app');
   if (!app) return;
 
   const hash: string = window.location.hash || '#home';
-  const t = (key: string): string => (window as any).__i18n?.[key] || key;
 
   if (!isAuthenticated()) {
     let authContent = '';
@@ -79,8 +48,6 @@ async function renderPage(): Promise<void> {
     return;
   }
 
-  currentUser = getUserName();
-
   if (hash === '#home') {
     try {
       const response = await getStories();
@@ -98,8 +65,8 @@ async function renderPage(): Promise<void> {
         <div class="home-page">
           <div class="hero text-center">
             <div class="container">
-              <h1 class="hero-title">${t('welcomeTitle')}</h1>
-              <p class="lead hero-subtitle">${t('welcomeSubtitle')}</p>
+              <h1 class="hero-title" id="welcome-title"></h1>
+              <p class="lead hero-subtitle" id="welcome-subtitle"></p>
             </div>
           </div>
           <div class="container">
@@ -113,7 +80,7 @@ async function renderPage(): Promise<void> {
         <div class="add-page">
           <div class="container">
             <div class="form-container max-w-2xl mx-auto">
-              <h2 class="text-center mb-4 form-page-title">${t('addTitle')}</h2>
+              <h2 class="text-center mb-4 form-page-title" id="add-title"></h2>
               <add-story-form></add-story-form>
             </div>
           </div>
@@ -130,7 +97,7 @@ async function renderPage(): Promise<void> {
       `;
       break;
     default:
-      pageContent = `<h2 class="text-center">${t('pageNotFound')}</h2>`;
+      pageContent = `<h2 class="text-center" id="page-not-found"></h2>`;
   }
 
   app.innerHTML = `
@@ -141,10 +108,9 @@ async function renderPage(): Promise<void> {
 }
 
 async function initApp(): Promise<void> {
-  await setLocale('en');
-  const locale = getLocale();
-  const data = await loadLocale(locale);
-  (window as any).__i18n = data;
+  await setLocaleFromUrl();
+  const currentLocale = getLocale();
+  console.log('Current locale:', currentLocale);
 
   window.addEventListener('hashchange', () => {
     renderPage();
@@ -155,12 +121,7 @@ async function initApp(): Promise<void> {
     renderPage();
   });
 
-  window.addEventListener('locale-changed', async (e: Event) => {
-    const customEvent = e as CustomEvent<{ locale: string }>;
-    const newLocale = customEvent.detail.locale;
-    await setLocale(newLocale);
-    const newData = await loadLocale(newLocale);
-    (window as any).__i18n = newData;
+  window.addEventListener('locale-changed', async () => {
     renderPage();
   });
 
