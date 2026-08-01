@@ -1,5 +1,18 @@
 import { configureLocalization } from '@lit/localize';
-import { sourceLocale, targetLocales } from '../generated/locale-codes';
+// Gunakan import dinamis untuk menghindari error jika file belum ada
+import type { sourceLocale, targetLocales } from '../generated/locale-codes';
+
+// Fallback jika file generated belum ada
+let sourceLocale = 'en';
+let targetLocales: string[] = ['id'];
+
+try {
+  const codes = await import('../generated/locale-codes');
+  sourceLocale = codes.sourceLocale;
+  targetLocales = codes.targetLocales;
+} catch {
+  console.warn('Locale codes not found, using defaults');
+}
 
 export const { getLocale, setLocale } = configureLocalization({
   sourceLocale,
