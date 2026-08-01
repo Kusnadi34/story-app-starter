@@ -1,4 +1,5 @@
 import { LitElement, html } from 'lit';
+import { msg } from '@lit/localize';
 
 class StoryList extends LitElement {
   createRenderRoot() {
@@ -28,7 +29,7 @@ class StoryList extends LitElement {
     }
 
     if (!this.stories || this.stories.length === 0) {
-      return html`<p class="text-center text-muted py-5">No stories found.</p>`;
+    return html`<p class="text-center text-muted py-5">${msg('noStories')}</p>`;
     }
 
     return html`
