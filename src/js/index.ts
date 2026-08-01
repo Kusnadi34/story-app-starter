@@ -13,7 +13,7 @@ import './components/locale-picker';
 
 import { isAuthenticated, logout, getUserName } from './services/authService';
 import { getStories } from './services/storyService';
-import { setLocaleFromUrl, getLocale } from './localization';
+import { setLocaleFromUrl } from './localization';
 
 interface Story {
   id: string;
@@ -109,8 +109,6 @@ async function renderPage(): Promise<void> {
 
 async function initApp(): Promise<void> {
   await setLocaleFromUrl();
-  const currentLocale = getLocale();
-  console.log('Current locale:', currentLocale);
 
   window.addEventListener('hashchange', () => {
     renderPage();
@@ -121,7 +119,7 @@ async function initApp(): Promise<void> {
     renderPage();
   });
 
-  window.addEventListener('locale-changed', async () => {
+  window.addEventListener('locale-changed', () => {
     renderPage();
   });
 
