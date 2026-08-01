@@ -72,12 +72,17 @@ module.exports = {
           to: path.resolve(__dirname, 'dist/'),
         },
         {
+          from: path.resolve(__dirname, 'src/locales/'),
+          to: path.resolve(__dirname, 'dist/locales/'),
+        },
+        // ✅ Tambahkan copy untuk generated locales
+        {
           from: path.resolve(__dirname, 'src/generated/'),
           to: path.resolve(__dirname, 'dist/generated/'),
           noErrorOnMissing: true,
         },
-       ],
-     }),
+      ],
+    }),
     new CleanWebpackPlugin(),
   ],
 };
