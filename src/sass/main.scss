@@ -1,4 +1,4 @@
-// 1. @use rules HARUS di awal (paling atas)
+// 1. @use rules HARUS di awal
 @use 'abstracts/variables' as *;
 @use 'abstracts/mixins' as *;
 
@@ -25,6 +25,6 @@
 @import '~tailwindcss/components';
 @import '~tailwindcss/utilities';
 
-// 7. Bootstrap & Icons (gunakan ~ juga)
+// 7. Bootstrap & Icons
 @import '~bootstrap/scss/bootstrap';
 @import '~bootstrap-icons/font/bootstrap-icons.css';
