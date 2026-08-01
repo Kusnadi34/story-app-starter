@@ -22,7 +22,7 @@ class RegisterForm extends LitElement {
   render() {
     return html`
       <div class="auth-form">
-        <h2 class="text-center mb-4">${msg('registerTitle')}</h2>
+        html`<h2 class="text-center mb-4">${msg('registerTitle')}</h2>`
         ${this.error ? html`<div class="alert alert-danger">${this.error}</div>` : ''}
         <form @submit=${this._handleRegister}>
           <div class="mb-3">
