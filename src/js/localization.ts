@@ -1,23 +1,5 @@
 import { configureLocalization } from '@lit/localize';
-
-// Default fallback jika file generated belum ada
-const defaultSourceLocale = 'en';
-const defaultTargetLocales = ['id'];
-const defaultAllLocales = ['en', 'id'];
-
-let sourceLocale = defaultSourceLocale;
-let targetLocales = defaultTargetLocales;
-let allLocales = defaultAllLocales;
-
-// Coba load generated codes (akan ada setelah build:locales dijalankan)
-try {
-  const codes = await import('../generated/locale-codes');
-  sourceLocale = codes.sourceLocale || defaultSourceLocale;
-  targetLocales = codes.targetLocales || defaultTargetLocales;
-  allLocales = codes.allLocales || defaultAllLocales;
-} catch {
-  console.warn('Locale codes not found, using defaults');
-}
+import { sourceLocale, targetLocales } from '../generated/locale-codes';
 
 export const { getLocale, setLocale } = configureLocalization({
   sourceLocale,
@@ -37,5 +19,3 @@ export const localeNames: Record<string, string> = {
   en: 'English',
   id: 'Indonesia',
 };
-
-export { allLocales };
