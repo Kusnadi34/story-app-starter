@@ -1,9 +1,9 @@
-import { html } from 'lit';
+import { LitElement, html } from 'lit';
+import { allLocales } from '../../generated/locale-codes';
+import { getLocale, localeNames, setLocaleFromUrl } from '../localization';
 import { updateWhenLocaleChanges } from '@lit/localize';
-import { getLocale, localeNames, setLocaleFromUrl, allLocales } from '../localization';
-import LitWithoutShadowDom from './base/lit-without-shadow-dom';
 
-class LocalePicker extends LitWithoutShadowDom {
+class LocalePicker extends LitElement {
   constructor() {
     super();
     updateWhenLocaleChanges(this);
@@ -11,11 +11,12 @@ class LocalePicker extends LitWithoutShadowDom {
 
   render() {
     return html`
-      <select class="form-select w-auto m-auto" @change=${this._localeChanged}>
+      <label for="change-language">Select preferred language:</label>
+      <select id="change-language" @change=${this._localeChanged}>
         ${allLocales.map((locale) => {
           return html`
             <option value=${locale} ?selected=${locale === getLocale()}>
-              ${localeNames[locale] || locale}
+              ${localeNames[locale]}
             </option>
           `;
         })}
@@ -23,9 +24,9 @@ class LocalePicker extends LitWithoutShadowDom {
     `;
   }
 
-  private _localeChanged(event: Event): void {
-    const select = event.target as HTMLSelectElement;
-    const newLocale = select.value;
+  _localeChanged(event: Event) {
+    const element = event.target as HTMLSelectElement;
+    const newLocale = element.value;
 
     if (newLocale !== getLocale()) {
       const url = new URL(window.location.href);
