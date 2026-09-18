@@ -6,7 +6,8 @@
   "output": {
     "mode": "runtime",
     "outputDir": "./src/generated/locales",
-    "language": "js"
+    "language": "js",
+    "localeCodesModule": "./src/generated/locale-codes.ts"
   },
   "interchange": {
     "format": "xliff",

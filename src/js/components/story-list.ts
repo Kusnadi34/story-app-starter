@@ -1,7 +1,9 @@
 import { LitElement, html } from 'lit';
-import { msg } from '@lit/localize';
+import { customElement } from 'lit/decorators.js';
+import { msg, updateWhenLocaleChanges } from '@lit/localize';
 
-class StoryList extends LitElement {
+@customElement('story-list')
+export class StoryList extends LitElement {
   createRenderRoot() {
     return this;
   }
@@ -13,6 +15,7 @@ class StoryList extends LitElement {
 
   constructor() {
     super();
+    updateWhenLocaleChanges(this);
     this.stories = [];
     this.loading = false;
   }
@@ -22,14 +25,14 @@ class StoryList extends LitElement {
       return html`
         <div class="text-center py-5">
           <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
+            <span class="visually-hidden">${msg('Loading...')}</span>
           </div>
         </div>
       `;
     }
 
     if (!this.stories || this.stories.length === 0) {
-    return html`<p class="text-center text-muted py-5">${msg('noStories')}</p>`;
+      return html`<p class="text-center text-muted py-5">${msg('No stories available')}</p>`;
     }
 
     return html`
@@ -52,11 +55,9 @@ class StoryList extends LitElement {
                 </div>
               </div>
             </div>
-          `
+          `,
         )}
       </div>
     `;
   }
 }
-
-customElements.define('story-list', StoryList);

@@ -1,12 +1,15 @@
 import { LitElement, html, css } from 'lit';
+import { customElement } from 'lit/decorators.js';
+import { msg, str, updateWhenLocaleChanges } from '@lit/localize';
 import { getUserName } from '../services/authService';
 
-class ProfileCard extends LitElement {
+@customElement('profile-card')
+export class ProfileCard extends LitElement {
   static styles = css`
     .profile-card {
       text-align: center;
       padding: 20px;
-      background: #fffbeb;
+      background: #fffbfb;
       border-radius: 16px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
@@ -29,6 +32,11 @@ class ProfileCard extends LitElement {
     }
   `;
 
+  constructor() {
+    super();
+    updateWhenLocaleChanges(this);
+  }
+
   render() {
     const name = getUserName() || 'Nana Kusnadi';
     const photoUrl = 'images/IMG_20260720_190745.jpg';
@@ -37,15 +45,15 @@ class ProfileCard extends LitElement {
       <div class="profile-card">
         <img src="${photoUrl}" alt="${name}">
         <h2>${name}</h2>
-        <p><strong>Frontend Engineering</strong></p>
-        <p>Selamat datang kembali, ${name}!</p>
+        <p><strong>${msg('Frontend Engineering')}</strong></p>
+        <p>${msg(str`Welcome back, ${name}!`)}</p>
         <p>📧 nanakusnadi035@gmail.com</p>
         <div>
-          ${['JavaScript', 'Webpack', 'Lit', 'Bootstrap', 'Sass'].map(skill => html`<span class="skill-badge">${skill}</span>`)}
+          ${['JavaScript', 'Webpack', 'Lit', 'Bootstrap'].map(skill => html`
+            <span class="skill-badge">${skill}</span>
+          `)}
         </div>
       </div>
     `;
   }
 }
-
-customElements.define('profile-card', ProfileCard);

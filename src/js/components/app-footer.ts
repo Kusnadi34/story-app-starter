@@ -1,8 +1,10 @@
 import { LitElement, html, css } from 'lit';
+import { customElement } from 'lit/decorators.js';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import './locale-picker';
 
-class AppFooter extends LitElement {
+@customElement('app-footer')
+export class AppFooter extends LitElement {
   static styles = css`
     .footer {
       background-color: #b45309;
@@ -39,11 +41,9 @@ class AppFooter extends LitElement {
       <footer class="footer">
         <div class="container-inner">
           <locale-picker class="d-block mb-3"></locale-picker>
-          <p>${msg('footerText')} <span class="heart">❤️</span></p>
+          <p>${msg('Created with')} <span class="heart">❤️</span></p>
         </div>
       </footer>
     `;
   }
 }
-
-customElements.define('app-footer', AppFooter);

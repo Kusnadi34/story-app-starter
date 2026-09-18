@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file target-language="id" source-language="en" original="lit-localize-inputs" datatype="plaintext">
+    <body>
+
+      <trans-unit id="s56cc72a5c70bc49d">
+        <source>Story App</source>
+        <target>Aplikasi Cerita</target>
+      </trans-unit>
+
+      <trans-unit id="s6abb1cd87fe0114e">
+        <source>Home</source>
+        <target>Beranda</target>
+      </trans-unit>
+
+      <trans-unit id="s1f30f2eaf1e38fb9">
+        <source>Add Story</source>
+        <target>Tambah Cerita</target>
+      </trans-unit>
+
+      <trans-unit id="sb061ff5a347a296e">
+        <source>Profile</source>
+        <target>Profil</target>
+      </trans-unit>
+
+      <trans-unit id="s67749057edb2586b">
+        <source>Logout</source>
+        <target>Keluar</target>
+      </trans-unit>
+
+      <trans-unit id="s49730f3d5751a433">
+        <source>Loading...</source>
+        <target>Memuat...</target>
+      </trans-unit>
+
+      <trans-unit id="sfae49223268489cc">
+        <source>No stories available</source>
+        <target>Belum ada cerita</target>
+      </trans-unit>
+
+      <trans-unit id="s1f2af9b83fa470ce">
+        <source>Frontend Engineering</source>
+        <target>Teknik Frontend</target>
+      </trans-unit>
+
+      <trans-unit id="se6178b450d1fe957">
+        <source>Welcome back, <x id="0" equiv-text="${name}"/>!</source>
+        <target>Selamat datang kembali, <x id="0" equiv-text="${name}"/>!</target>
+      </trans-unit>
+
+      <trans-unit id="s0105b1af8b435eee">
+        <source>Select preferred language</source>
+        <target>Pilih bahasa yang diinginkan</target>
+      </trans-unit>
+
+      <trans-unit id="sd20f96f613d2b2f5">
+        <source>Created with</source>
+        <target>Dibuat dengan</target>
+      </trans-unit>
+
+      <trans-unit id="sc8da3cc71de63832">
+        <source>Login</source>
+        <target>Masuk</target>
+      </trans-unit>
+
+      <trans-unit id="sd1f44f1a8bc20e67">
+        <source>Email</source>
+        <target>Email</target>
+      </trans-unit>
+
+      <trans-unit id="sf6e1665c7022a1f8">
+        <source>Password</source>
+        <target>Kata Sandi</target>
+      </trans-unit>
+
+      <trans-unit id="scad07cc65ad2fb30">
+        <source>Don't have an account?</source>
+        <target>Belum punya akun?</target>
+      </trans-unit>
+
+      <trans-unit id="s74c6370ad732ce3e">
+        <source>Register here</source>
+        <target>Daftar di sini</target>
+      </trans-unit>
+
+      <trans-unit id="s2c15b9b13a3e2a80">
+        <source>Register</source>
+        <target>Daftar</target>
+      </trans-unit>
+
+      <trans-unit id="sef49aec68fd1dc66">
+        <source>Name</source>
+        <target>Nama</target>
+      </trans-unit>
+
+      <trans-unit id="s205b3e04ad286caa">
+        <source>Already have an account?</source>
+        <target>Sudah punya akun?</target>
+      </trans-unit>
+
+      <trans-unit id="s6cd8f126f00165b8">
+        <source>Login here</source>
+        <target>Masuk di sini</target>
+      </trans-unit>
+
+      <trans-unit id="s77b51efecb6a6d8e">
+        <source>Registration successful</source>
+        <target>Pendaftaran berhasil</target>
+      </trans-unit>
+
+      <trans-unit id="s4c87445e3f592f1d">
+        <source>Registration failed</source>
+        <target>Pendaftaran gagal</target>
+      </trans-unit>
+
+      <trans-unit id="se520fa80057e0569">
+        <source>Story added successfully</source>
+        <target>Cerita berhasil ditambahkan</target>
+      </trans-unit>
+
+      <trans-unit id="s63d894b1ddb06289">
+        <source>Description</source>
+        <target>Deskripsi</target>
+      </trans-unit>
+
+      <trans-unit id="sb3d4f79d9d8b71e5">
+        <source>Submit</source>
+        <target>Kirim</target>
+      </trans-unit>
+<trans-unit id="sf1a78dd2508964c3">
+  <source>Photo</source>
+</trans-unit>
+<trans-unit id="s66cd1f095f11efa6">
+  <source>Photo is required</source>
+</trans-unit>
+<trans-unit id="sb72c988ee15f790b">
+  <source>Failed to add story</source>
+</trans-unit>
+
+    </body>
+  </file>
+</xliff>

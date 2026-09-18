@@ -1,9 +1,13 @@
 import { LitElement, html } from 'lit';
+import { customElement } from 'lit/decorators.js';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { register } from '../services/authService';
 
-class RegisterForm extends LitElement {
-  createRenderRoot() { return this; }
+@customElement('register-form')
+export class RegisterForm extends LitElement {
+  createRenderRoot() {
+    return this;
+  }
 
   constructor() {
     super();
@@ -20,28 +24,28 @@ class RegisterForm extends LitElement {
   render() {
     return html`
       <div class="auth-form">
-        <h2 class="text-center mb-4">${msg('registerTitle')}</h2>
+        <h2 class="text-center mb-4">${msg('Register')}</h2>
         ${this.error ? html`<div class="alert alert-danger">${this.error}</div>` : ''}
         <form @submit=${this._handleRegister}>
           <div class="mb-3">
-            <label for="name" class="form-label">${msg('name')}</label>
+            <label for="name" class="form-label">${msg('Name')}</label>
             <input type="text" class="form-control" id="name" required />
           </div>
           <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
+            <label for="email" class="form-label">${msg('Email')}</label>
             <input type="email" class="form-control" id="email" required />
           </div>
           <div class="mb-3 position-relative">
-            <label for="password" class="form-label">${msg('password')}</label>
-            <input type="password" class="form-control" id="password" required minlength="8" />
-            <span class="password-toggle" @click=${this._togglePassword} style="position:absolute; right:15px; top:44px; cursor:pointer;">👁️</span>
+            <label for="password" class="form-label">${msg('Password')}</label>
+            <input type="password" class="form-control" id="password" required />
+            <span class="password-toggle" @click=${this._togglePassword}>👁️</span>
           </div>
           <button type="submit" class="btn btn-submit w-100" ?disabled=${this.loading}>
-            ${this.loading ? html`<span class="spinner-border spinner-border-sm"></span>` : msg('registerButton')}
+            ${this.loading ? html`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ${msg('Loading...')}` : msg('Register')}
           </button>
         </form>
         <p class="text-center mt-3">
-          ${msg('haveAccount')} <a href="#login" class="text-primary">${msg('loginHere')}</a>
+          ${msg("Already have an account?")} <a href="#login" class="text-decoration-none">${msg('Login here')}</a>
         </p>
       </div>
     `;
@@ -51,6 +55,7 @@ class RegisterForm extends LitElement {
     e.preventDefault();
     this.error = '';
     this.loading = true;
+
     const form = e.target as HTMLFormElement;
     const name = (form.querySelector('#name') as HTMLInputElement).value;
     const email = (form.querySelector('#email') as HTMLInputElement).value;
@@ -59,9 +64,9 @@ class RegisterForm extends LitElement {
     try {
       await register(name, email, password);
       window.location.hash = '#login';
-      alert(msg('registerSuccess'));
+      alert(msg('Registration successful'));
     } catch (err: any) {
-      this.error = err.response?.data?.message || msg('registerError');
+      this.error = err.response?.data?.message || msg('Registration failed');
     } finally {
       this.loading = false;
     }
@@ -69,8 +74,8 @@ class RegisterForm extends LitElement {
 
   _togglePassword(e: Event) {
     const input = this.querySelector('#password') as HTMLInputElement;
-    input.type = input.type === 'password' ? 'text' : 'password';
+    if (input) {
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
   }
 }
-
-customElements.define('register-form', RegisterForm);

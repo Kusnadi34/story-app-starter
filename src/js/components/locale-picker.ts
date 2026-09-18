@@ -1,9 +1,11 @@
 import { LitElement, html } from 'lit';
+import { customElement } from 'lit/decorators.js';
 import { allLocales } from '../../generated/locale-codes';
 import { getLocale, localeNames, setLocaleFromUrl } from '../localization';
-import { updateWhenLocaleChanges } from '@lit/localize';
+import { msg, updateWhenLocaleChanges } from '@lit/localize';
 
-class LocalePicker extends LitElement {
+@customElement('locale-picker')
+export class LocalePicker extends LitElement {
   constructor() {
     super();
     updateWhenLocaleChanges(this);
@@ -11,7 +13,7 @@ class LocalePicker extends LitElement {
 
   render() {
     return html`
-      <label for="change-language">Select preferred language:</label>
+      <label for="change-language">${msg('Select preferred language')}</label>
       <select id="change-language" @change=${this._localeChanged}>
         ${allLocales.map((locale) => {
           return html`
@@ -36,5 +38,3 @@ class LocalePicker extends LitElement {
     }
   }
 }
-
-customElements.define('locale-picker', LocalePicker);
