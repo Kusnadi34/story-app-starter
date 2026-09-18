@@ -13,6 +13,7 @@ class StoryList extends LitElement {
 
   constructor() {
     super();
+    updateWhenLocaleChanges(this);
     this.stories = [];
     this.loading = false;
   }
