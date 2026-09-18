@@ -5,10 +5,11 @@
   "tsConfig": "./tsconfig.json",
   "output": {
     "mode": "runtime",
-    "outputDir": "./src/generated/locales"
+    "outputDir": "./src/generated/locales",
+    "language": "js"
   },
   "interchange": {
     "format": "xliff",
-    "xliffDir": "./xliff/"
+    "xliffDir": "./xliff"
   }
 }
