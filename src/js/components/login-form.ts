@@ -47,6 +47,32 @@ export class LoginForm extends LitElement {
     `;
   }
 
-  // ... methods tetap sama
-}
+  async _handleLogin(e: Event) {
+    e.preventDefault();
+    this.error = '';
+    this.loading = true;
 
+    const form = e.target as HTMLFormElement;
+    const email = (form.querySelector('#email') as HTMLInputElement).value;
+    const password = (form.querySelector('#password') as HTMLInputElement).value;
+
+    try {
+      await login(email, password);
+      // Picu event agar halaman di-render ulang
+      window.dispatchEvent(new CustomEvent('auth-changed'));
+      // Arahkan ke beranda
+      window.location.hash = '#/';
+    } catch (err: any) {
+      this.error = err.response?.data?.message || msg('Login failed. Please check your email and password.');
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  _togglePassword(e: Event) {
+    const input = this.querySelector('#password') as HTMLInputElement;
+    if (input) {
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
+  }
+}
