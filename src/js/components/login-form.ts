@@ -48,7 +48,7 @@ export class LoginForm extends LitElement {
   }
 
   async _handleLogin(e: Event) {
-    e.preventDefault(); // ✅ Mencegah refresh halaman
+    e.preventDefault();
     this.error = '';
     this.loading = true;
 
@@ -58,10 +58,11 @@ export class LoginForm extends LitElement {
 
     try {
       await login(email, password);
-      // Jika login berhasil, arahkan ke halaman beranda
+      // Picu event agar halaman di-render ulang
+      window.dispatchEvent(new CustomEvent('auth-changed'));
+      // Arahkan ke beranda
       window.location.hash = '#/';
     } catch (err: any) {
-      // Tampilkan pesan error dari API atau pesan default
       this.error = err.response?.data?.message || msg('Login failed. Please check your email and password.');
     } finally {
       this.loading = false;
