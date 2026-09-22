@@ -6,14 +6,12 @@ import { getLocale, localeNames, setLocaleFromUrl } from '../localization';
 
 @customElement('app-header')
 export class AppHeader extends LitElement {
-  // ✅ Tambahan dari reviewer: Menonaktifkan Shadow DOM agar styling dari luar bisa masuk
+  // ✅ Mematikan Shadow DOM agar styling dari luar bisa masuk
   createRenderRoot() {
     return this;
   }
 
-  static styles = css`
-    /* Styling khusus bisa ditambahkan di sini jika perlu */
-  `;
+  static styles = css``;
 
   constructor() {
     super();
@@ -26,7 +24,7 @@ export class AppHeader extends LitElement {
     return html`
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">${msg('Story App')}</a>
+          <a class="navbar-brand" href="#home">${msg('Story App')}</a>
 
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
@@ -35,13 +33,13 @@ export class AppHeader extends LitElement {
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
               <li class="nav-item">
-                <a class="nav-link" href="#/">${msg('Home')}</a>
+                <a class="nav-link" href="#home">${msg('Home')}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#/add">${msg('Add Story')}</a>
+                <a class="nav-link" href="#add">${msg('Add Story')}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#/profile">${msg('Profile')}</a>
+                <a class="nav-link" href="#profile">${msg('Profile')}</a>
               </li>
             </ul>
 
@@ -108,14 +106,6 @@ export class AppHeader extends LitElement {
     e.preventDefault();
     if ((window as any).__logout) {
       (window as any).__logout();
-    }
-
-    const offcanvas = document.querySelector('#offcanvas');
-    if (offcanvas) {
-      const bsOffcanvas = (window as any).bootstrap?.Offcanvas?.getInstance(offcanvas);
-      if (bsOffcanvas) {
-        bsOffcanvas.hide();
-      }
     }
   }
 }
