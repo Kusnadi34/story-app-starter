@@ -5,6 +5,11 @@ import { getUserName } from '../services/authService';
 
 @customElement('profile-card')
 export class ProfileCard extends LitElement {
+  // ✅ Mematikan Shadow DOM agar styling dari luar bisa masuk
+  createRenderRoot() {
+    return this;
+  }
+
   static styles = css`
     .profile-card {
       text-align: center;
