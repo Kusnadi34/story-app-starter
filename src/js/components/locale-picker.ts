@@ -6,6 +6,11 @@ import { msg, updateWhenLocaleChanges } from '@lit/localize';
 
 @customElement('locale-picker')
 export class LocalePicker extends LitElement {
+  // ✅ Mematikan Shadow DOM agar styling dari luar bisa masuk
+  createRenderRoot() {
+    return this;
+  }
+
   constructor() {
     super();
     updateWhenLocaleChanges(this);
