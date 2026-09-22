@@ -37,7 +37,7 @@ export class RegisterForm extends LitElement {
           </div>
           <div class="mb-3 position-relative">
             <label for="password" class="form-label">${msg('Password')}</label>
-            <input type="password" class="form-control" id="password" required />
+            <input type="password" class="form-control" id="password" required minlength="8" />
             <span class="password-toggle" @click=${this._togglePassword}>👁️</span>
           </div>
           <button type="submit" class="btn btn-submit w-100" ?disabled=${this.loading}>
@@ -63,8 +63,9 @@ export class RegisterForm extends LitElement {
 
     try {
       await register(name, email, password);
-      window.location.hash = '#login';
       alert(msg('Registration successful'));
+      // ✅ Arahkan ke login setelah register berhasil
+      window.location.hash = '#login';
     } catch (err: any) {
       this.error = err.response?.data?.message || msg('Registration failed');
     } finally {
@@ -72,7 +73,7 @@ export class RegisterForm extends LitElement {
     }
   }
 
-  _togglePassword(e: Event) {
+  _togglePassword() {
     const input = this.querySelector('#password') as HTMLInputElement;
     if (input) {
       input.type = input.type === 'password' ? 'text' : 'password';
