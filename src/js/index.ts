@@ -102,7 +102,7 @@ async function renderPage(): Promise<void> {
 
   app.innerHTML = `
     <app-header></app-header>
-    <main class="py-4">${pageContent}</main>
+    <main class="py-0">${pageContent}</main>
     <app-footer></app-footer>
   `;
 }
