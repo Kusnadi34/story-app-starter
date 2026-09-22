@@ -5,6 +5,11 @@ import './locale-picker';
 
 @customElement('app-footer')
 export class AppFooter extends LitElement {
+  // ✅ Mematikan Shadow DOM agar styling dari luar bisa masuk
+  createRenderRoot() {
+    return this;
+  }
+
   static styles = css`
     .footer {
       background-color: #b45309;
