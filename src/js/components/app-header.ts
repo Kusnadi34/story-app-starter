@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
 import { allLocales } from '../../generated/locale-codes';
@@ -6,12 +6,9 @@ import { getLocale, localeNames, setLocaleFromUrl } from '../localization';
 
 @customElement('app-header')
 export class AppHeader extends LitElement {
-  // ✅ Mematikan Shadow DOM agar styling dari luar bisa masuk
   createRenderRoot() {
     return this;
   }
-
-  static styles = css``;
 
   constructor() {
     super();
@@ -22,7 +19,8 @@ export class AppHeader extends LitElement {
     const currentLocale = getLocale();
 
     return html`
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <!-- ✅ PERBAIKAN: Hapus 'navbar-dark bg-dark', ganti dengan 'navbar-light' -->
+      <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
           <a class="navbar-brand" href="#home">${msg('Story App')}</a>
 
