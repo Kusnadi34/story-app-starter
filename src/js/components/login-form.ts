@@ -58,10 +58,9 @@ export class LoginForm extends LitElement {
 
     try {
       await login(email, password);
-      // Picu event agar halaman di-render ulang
+      // ✅ Perbaikan: arahkan ke #home (sesuai routing di index.ts)
+      window.location.hash = '#home';
       window.dispatchEvent(new CustomEvent('auth-changed'));
-      // Arahkan ke beranda
-      window.location.hash = '#/';
     } catch (err: any) {
       this.error = err.response?.data?.message || msg('Login failed. Please check your email and password.');
     } finally {
@@ -69,7 +68,7 @@ export class LoginForm extends LitElement {
     }
   }
 
-  _togglePassword(e: Event) {
+  _togglePassword() {
     const input = this.querySelector('#password') as HTMLInputElement;
     if (input) {
       input.type = input.type === 'password' ? 'text' : 'password';
