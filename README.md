@@ -4,7 +4,7 @@
 [![Deploy to GitHub Pages](https://img.shields.io/badge/GitHub-Pages-black?logo=github)](https://kusnadi34.github.io/story-app-starter/)
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
-**Story App** adalah aplikasi web untuk berbagi cerita (story) yang dibangun dengan arsitektur frontend modern. Proyek ini menggunakan **Webpack** sebagai module bundler, **Bootstrap 5** untuk UI yang responsif, dan **Lit** untuk Web Components yang ringan dan reusable. Aplikasi ini terintegrasi dengan **Story API** untuk menyimpan dan mengambil data cerita secara dinamis.
+**Story App** adalah aplikasi web untuk berbagi cerita (story) yang dibangun dengan arsitektur frontend modern. Proyek ini menggunakan **Webpack** sebagai module bundler, **Bootstrap 5** untuk UI yang responsif, dan **Lit** untuk Web Components yang ringan dan reusable. Aplikasi ini terintegrasi dengan **Story API** untuk menyimpan dan mengambil data cerita secara dinamis..
 
 > 🚀 **Live Demo**:
 > - [Firebase Hosting](https://story-app-starter-5d1a2.web.app)
