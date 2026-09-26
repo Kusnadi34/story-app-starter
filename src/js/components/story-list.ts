@@ -36,15 +36,19 @@ export class StoryList extends LitElement {
     }
 
     return html`
-      <div class="row custom-grid">
+      <!-- ✅ PERBAIKAN: Hapus 'custom-grid', gunakan 'row g-2' -->
+      <div class="row g-2">
         ${this.stories.map(
           (story) => html`
-            <div class="col">
-              <div class="card story-card">
+            <!-- ✅ PERBAIKAN: Gunakan col-12 col-sm-6 col-md-4 agar responsif -->
+            <div class="col-12 col-sm-6 col-md-4">
+              <!-- ✅ Tambahan 'h-100' agar tinggi kartu seragam -->
+              <div class="card story-card h-100">
                 <img
                   src="${story.photoUrl}"
                   class="card-img-top"
                   alt="${story.name}"
+                  onerror="this.onerror=null;this.src='https://placehold.co/600x400?text=Image+Not+Found';"
                 />
                 <div class="card-body">
                   <h5 class="card-title">${story.name}</h5>
